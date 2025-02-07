@@ -1,0 +1,17 @@
+{  
+  "compilerOptions": {  
+    "moduleResolution": "node", // 使用 node 模块解析，允许省略文件扩展名  
+    "target": "ESNext",                   // 编译生成 ES 的版本  
+    "module": "ESNext",                   // 指定生成的模块系统  
+    "strict": true,                        // 启用所有严格类型检查选项  
+    "forceConsistentCasingInFileNames": true, // 强制文件名大小写一致性检查  
+    "skipLibCheck": true,                 // 跳过库文件的类型检查  
+    "esModuleInterop": true,               // 允许与 CommonJS 模块的兼容性  
+    "baseUrl": "./",  
+    "paths": {  
+      "@/*": ["src/*"]  
+    }  
+  },  
+  "include": ["src/**/*"],  
+  "exclude": ["node_modules", "**/*.spec.ts"]  
+}
