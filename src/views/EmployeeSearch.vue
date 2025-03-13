@@ -2,30 +2,34 @@
   <div class="employee-search">
     <h1>Employee Search</h1>
     <div class="search-form">
-      <input v-model="searchQuery.id" type="number" placeholder="Employee ID" class="search-input" />
-      <input v-model="searchQuery.name" placeholder="Employee Name" class="search-input" />
+      <input v-model="searchQuery.id" type="number" placeholder="Input Employee ID..." class="search-input" />
+      <input v-model="searchQuery.name" placeholder="Input Employee Name..." class="search-input" />
       <button @click="filterEmployees" class="search-button">Search</button>
     </div>
     <table class="employee-table">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Age</th>
-          <th>Birthday</th>
-          <th>Tel</th>
-          <th>Address</th>
-          <th>Actions</th>
+          <th>No</th>
+          <th>Employee ID</th>
+          <th>Employee Name</th>
+          <th>Employee Age</th>
+          <th>Employee Birthday</th>
+          <th>Employee Tel</th>
+          <th>Employee Address</th>
+          <th>Employee Memo</th>
+          <th>Employee Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="employee in paginatedEmployees" :key="employee.id">
+        <tr v-for="(employee, index) in paginatedEmployees" :key="employee.id">
+          <td>{{ (currentPage - 1) * itemsPerPage + index + 1 }}</td>
           <td>{{ employee.id }}</td>
           <td>{{ employee.name }}</td>
           <td>{{ employee.age }}</td>
           <td>{{ employee.birthday }}</td>
           <td>{{ employee.tel }}</td>
           <td>{{ employee.address }}</td>
+          <td>------- 备注 -------</td>
           <td>
             <button @click="goToEditEmployee(employee.id)" class="edit-button">Edit</button>
             <button @click="confirmDelete(employee.id)" class="delete-button">Delete</button>
@@ -48,23 +52,34 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, computed, onMounted, watch } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import Pagination from '../views/Pagination.vue';
 
 const router = useRouter();
+const route = useRoute();
 
 // 示例员工数据
 const employees = ref([
-  { id: 1, name: 'John Doe', age: 30, birthday: '1995-01-01', tel: '123456789', address: '123 Main St' },
-  { id: 2, name: 'Jane Smith', age: 25, birthday: '2000-02-02', tel: '987654321', address: '456 Elm St' },
-  { id: 3, name: 'Jane Smith', age: 25, birthday: '2000-02-02', tel: '987654321', address: '456 Elm St' },
-  { id: 4, name: 'Jane Smith', age: 25, birthday: '2000-02-02', tel: '987654321', address: '456 Elm St' },
-  { id: 5, name: 'Jane Smith', age: 25, birthday: '2000-02-02', tel: '987654321', address: '456 Elm St' },
-  { id: 6, name: 'Jane Smith', age: 25, birthday: '2000-02-02', tel: '987654321', address: '456 Elm St' },
-  { id: 7, name: 'Jane Smith', age: 25, birthday: '2000-02-02', tel: '987654321', address: '456 Elm St' },
-  { id: 8, name: 'Jane Smith', age: 25, birthday: '2000-02-02', tel: '987654321', address: '456 Elm St' },
-  { id: 10, name: 'Jane Smith', age: 25, birthday: '2000-02-02', tel: '987654321', address: '456 Elm St' },
+  { id: 1001, name: '王小狗', age: 30, birthday: '1995-01-01', tel: '123456789', address: '辽宁省沈阳市康平县' },
+  { id: 1002, name: '林令狗', age: 25, birthday: '2000-02-02', tel: '987654321', address: '山东省青岛市' },
+  { id: 1003, name: '王二狗', age: 25, birthday: '2000-02-02', tel: '987654321', address: '米花国米花市米花小镇' },
+  { id: 1004, name: '金三胖', age: 25, birthday: '2000-02-02', tel: '987654321', address: '朝鲜人民主义共和国 万岁！' },
+  { id: 1005, name: '五 哥', age: 25, birthday: '2000-02-02', tel: '987654321', address: '辽宁省大连市沙河口区' },
+  { id: 1006, name: '军 师', age: 25, birthday: '2000-02-02', tel: '987654321', address: '辽宁省大连市高新园区' },
+  { id: 1007, name: '谢广坤', age: 25, birthday: '2000-02-02', tel: '987654321', address: '辽宁省铁岭市开原县象牙山村' },
+  { id: 1008, name: '王老七', age: 25, birthday: '2000-02-02', tel: '987654321', address: '辽宁省铁岭市开原县象牙山村' },
+  { id: 1009, name: '朱重八', age: 25, birthday: '2000-02-02', tel: '987654321', address: '应天府' },
+  { id: 1010, name: '朱五四', age: 25, birthday: '2000-02-02', tel: '987654321', address: '应天府' },
+  { id: 1011, name: '朱五五', age: 25, birthday: '2000-02-02', tel: '987654321', address: '应天府' },
+  { id: 1012, name: '朱五六', age: 25, birthday: '2000-02-02', tel: '987654321', address: '应天府' },
+  { id: 1013, name: '朱五七', age: 25, birthday: '2000-02-02', tel: '987654321', address: '应天府' },
+  { id: 1014, name: '朱五八', age: 25, birthday: '2000-02-02', tel: '987654321', address: '应天府' },
+  { id: 1015, name: '朱五酒', age: 25, birthday: '2000-02-02', tel: '987654321', address: '应天府' },
+  { id: 1016, name: '朱六十', age: 25, birthday: '2000-02-02', tel: '987654321', address: '应天府' },
+  { id: 1017, name: '朱六一', age: 25, birthday: '2000-02-02', tel: '987654321', address: '应天府' },
+  { id: 1018, name: '朱六二', age: 25, birthday: '2000-02-02', tel: '987654321', address: '应天府' },
+  { id: 1019, name: '朱六san', age: 25, birthday: '2000-02-02', tel: '987654321', address: '应天府' },
   // 更多员工数据...
 ]);
 
@@ -74,7 +89,7 @@ const searchQuery = ref({
 });
 
 const filteredEmployees = ref([...employees.value]);
-const currentPage = ref(1);
+const currentPage = ref(parseInt(route.query.page as string) || 1);
 const itemsPerPage = ref(8);
 const showDeleteConfirm = ref(false);
 const deleteEmployeeId = ref(null);
@@ -89,12 +104,21 @@ const paginatedEmployees = computed(() => {
   return filteredEmployees.value.slice(start, end);
 });
 
+const previousSearchQuery = ref({ ...searchQuery.value });
+
 const filterEmployees = () => {
+  const isSearchChanged = searchQuery.value.id !== previousSearchQuery.value.id || searchQuery.value.name !== previousSearchQuery.value.name;
+
   filteredEmployees.value = employees.value.filter(employee => {
     return (!searchQuery.value.id || employee.id == searchQuery.value.id) &&
-           (!searchQuery.value.name || employee.name.includes(searchQuery.value.name));
-  });
-  currentPage.value = 1;
+        (!searchQuery.value.name || employee.name.includes(searchQuery.value.name));
+    });
+
+  if (isSearchChanged) {
+    currentPage.value = 1;
+  }
+
+  previousSearchQuery.value = { ...searchQuery.value };
 };
 
 const handlePageChange = (page: number) => {
@@ -102,11 +126,11 @@ const handlePageChange = (page: number) => {
 };
 
 const goToEditEmployee = (id: number) => {
-  router.push({ name: 'EmployeeEdit', params: { id } });
+  router.push({ name: 'EmployeeEdit', params: { id }, query: { page: currentPage.value, name: searchQuery.value.name } });
 };
 
 const goToEmployeeDetails = (id: number) => {
-  router.push({ name: 'EmployeeDetails', params: { id } });
+  router.push({ name: 'EmployeeDetails', params: { id }, query: { page: currentPage.value, name: searchQuery.value.name } });
 };
 
 const confirmDelete = (id: number) => {
@@ -123,6 +147,12 @@ const deleteEmployee = () => {
 const cancelDelete = () => {
   showDeleteConfirm.value = false;
 };
+
+onMounted(() => {
+  searchQuery.value.id = route.query.id as string || '';
+  searchQuery.value.name = route.query.name as string || '';
+  filterEmployees();
+});
 </script>
 
 <style scoped>
@@ -171,11 +201,12 @@ const cancelDelete = () => {
 .employee-table th, .employee-table td {
   border: 1px solid #ddd;
   padding: 8px;
-  text-align: left;
+  text-align: center;
 }
 
 .employee-table th {
   background-color: #f2f2f2;
+  text-align:center;
 }
 
 .employee-table tr:hover {

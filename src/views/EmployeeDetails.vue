@@ -10,13 +10,14 @@
       <p><strong>Birthday:</strong> {{ employee.birthday }}</p>
       <p><strong>Tel:</strong> {{ employee.tel }}</p>
       <p><strong>Address:</strong> {{ employee.address }}</p>
+      <p><strong>Hobby:</strong> 去厕所打鱼！</p>
     </div>
-    <router-link to="/EmployeeSearch" class="back-link">Back to Search</router-link>
+    <router-link :to="backToSearchLink" class="back-link">Back to Search</router-link>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
@@ -32,19 +33,39 @@ const employee = ref({
 const fetchEmployeeDetails = async (id: string) => {
   // 此处模拟获取员工详细信息的 API 请求
   const allEmployees = [
-    { id: 1, name: 'John Doe', age: 30, birthday: '1995-01-01', tel: '123456789', address: '123 Main St' },
-  { id: 2, name: 'Jane Smith', age: 25, birthday: '2000-02-02', tel: '987654321', address: '456 Elm St' },
-  { id: 3, name: 'Jane Smith', age: 25, birthday: '2000-02-02', tel: '987654321', address: '456 Elm St' },
-  { id: 4, name: 'Jane Smith', age: 25, birthday: '2000-02-02', tel: '987654321', address: '456 Elm St' },
-  { id: 5, name: 'Jane Smith', age: 25, birthday: '2000-02-02', tel: '987654321', address: '456 Elm St' },
-  { id: 6, name: 'Jane Smith', age: 25, birthday: '2000-02-02', tel: '987654321', address: '456 Elm St' },
-  { id: 7, name: 'Jane Smith', age: 25, birthday: '2000-02-02', tel: '987654321', address: '456 Elm St' },
-  { id: 8, name: 'Jane Smith', age: 25, birthday: '2000-02-02', tel: '987654321', address: '456 Elm St' },
-  { id: 10, name: 'Jane Smith', age: 25, birthday: '2000-02-02', tel: '987654321', address: '456 Elm St' },
+  { id: 1001, name: '王小狗', age: 30, birthday: '1995-01-01', tel: '123456789', address: '辽宁省沈阳市康平县' },
+  { id: 1002, name: '林令狗', age: 25, birthday: '2000-02-02', tel: '987654321', address: '山东省青岛市' },
+  { id: 1003, name: '王二狗', age: 25, birthday: '2000-02-02', tel: '987654321', address: '米花国米花市米花小镇' },
+  { id: 1004, name: '金三胖', age: 25, birthday: '2000-02-02', tel: '987654321', address: '朝鲜人民主义共和国 万岁！' },
+  { id: 1005, name: '五 哥', age: 25, birthday: '2000-02-02', tel: '987654321', address: '辽宁省大连市沙河口区' },
+  { id: 1006, name: '军 师', age: 25, birthday: '2000-02-02', tel: '987654321', address: '辽宁省大连市高新园区' },
+  { id: 1007, name: '谢广坤', age: 25, birthday: '2000-02-02', tel: '987654321', address: '辽宁省铁岭市开原县象牙山村' },
+  { id: 1008, name: '王老七', age: 25, birthday: '2000-02-02', tel: '987654321', address: '辽宁省铁岭市开原县象牙山村' },
+  { id: 1009, name: '朱重八', age: 25, birthday: '2000-02-02', tel: '987654321', address: '应天府' },
+  { id: 1010, name: '朱五四', age: 25, birthday: '2000-02-02', tel: '987654321', address: '应天府' },
+  { id: 1011, name: '朱五五', age: 25, birthday: '2000-02-02', tel: '987654321', address: '应天府' },
+  { id: 1012, name: '朱五六', age: 25, birthday: '2000-02-02', tel: '987654321', address: '应天府' },
+  { id: 1013, name: '朱五七', age: 25, birthday: '2000-02-02', tel: '987654321', address: '应天府' },
+  { id: 1014, name: '朱五八', age: 25, birthday: '2000-02-02', tel: '987654321', address: '应天府' },
+  { id: 1015, name: '朱五酒', age: 25, birthday: '2000-02-02', tel: '987654321', address: '应天府' },
+  { id: 1016, name: '朱六十', age: 25, birthday: '2000-02-02', tel: '987654321', address: '应天府' },
+  { id: 1017, name: '朱六一', age: 25, birthday: '2000-02-02', tel: '987654321', address: '应天府' },
+  { id: 1018, name: '朱六二', age: 25, birthday: '2000-02-02', tel: '987654321', address: '应天府' },
+  { id: 1019, name: '朱六san', age: 25, birthday: '2000-02-02', tel: '987654321', address: '应天府' },
     // 更多员工数据...
   ];
   employee.value = allEmployees.find(emp => emp.id.toString() === id) || employee.value;
 };
+
+const backToSearchLink = computed(() => {
+  return { 
+    path: '/EmployeeSearch', 
+    query: {
+      page: route.query.page || 1,
+      name: route.query.name || ''
+    }
+  };
+});
 
 onMounted(() => {
   const employeeId = route.params.id as string;

@@ -50,8 +50,16 @@ const employee = ref({
 const fetchEmployeeDetails = async (id: string) => {
   // 假设有一个 API 可以获取员工详细信息
   const allEmployees = [
-    { id: 1, name: 'John Doe', age: 30, birthday: '1995-01-01', tel: '123456789', address: '123 Main St' },
-    { id: 2, name: 'Jane Smith', age: 25, birthday: '2000-02-02', tel: '987654321', address: '456 Elm St' },
+  { id: 1001, name: '王小狗', age: 30, birthday: '1995-01-01', tel: '123456789', address: '辽宁省沈阳市康平县' },
+  { id: 1002, name: '林令狗', age: 25, birthday: '2000-02-02', tel: '987654321', address: '山东省青岛市' },
+  { id: 1003, name: '王二狗', age: 25, birthday: '2000-02-02', tel: '987654321', address: '米花国米花市米花小镇' },
+  { id: 1004, name: '金三胖', age: 25, birthday: '2000-02-02', tel: '987654321', address: '朝鲜人民主义共和国 万岁！' },
+  { id: 1005, name: '五 哥', age: 25, birthday: '2000-02-02', tel: '987654321', address: '辽宁省大连市沙河口区' },
+  { id: 1006, name: '军 师', age: 25, birthday: '2000-02-02', tel: '987654321', address: '辽宁省大连市高新园区' },
+  { id: 1007, name: '谢广坤', age: 25, birthday: '2000-02-02', tel: '987654321', address: '辽宁省铁岭市开原县象牙山村' },
+  { id: 1008, name: '王老七', age: 25, birthday: '2000-02-02', tel: '987654321', address: '辽宁省铁岭市开原县象牙山村' },
+  { id: 1009, name: '朱重八', age: 25, birthday: '2000-02-02', tel: '987654321', address: '应天府' },
+  { id: 1010, name: '朱五四', age: 25, birthday: '2000-02-02', tel: '987654321', address: '应天府' },
     // 更多员工数据...
   ];
   const fetchedEmployee = allEmployees.find(emp => emp.id.toString() === id);
@@ -62,14 +70,14 @@ const fetchEmployeeDetails = async (id: string) => {
 
 const saveEmployee = async () => {
   try {
-    // 假设有一个 API 可以保存员工详细信息
-    await fetch(`https://api.example.com/employees/${employee.value.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(employee.value)
-    });
+    // // 假设有一个 API 可以保存员工详细信息
+    // await fetch(`https://api.example.com/employees/${employee.value.id}`, {
+    //   method: 'PUT',
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: JSON.stringify(employee.value)
+    // });
 
     // 保存成功后跳转回员工列表页面
     router.push('/EmployeeSearch');
