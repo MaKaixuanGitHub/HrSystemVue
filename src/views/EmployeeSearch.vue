@@ -1,23 +1,24 @@
 <template>
   <div class="employee-search">
-    <h1>Employee Search</h1>
+    <h1>员工查询</h1>
     <div class="search-form">
-      <input v-model="searchQuery.id" type="number" placeholder="Input Employee ID..." class="search-input" />
-      <input v-model="searchQuery.name" placeholder="Input Employee Name..." class="search-input" />
-      <button @click="filterEmployees" class="search-button">Search</button>
+      <input v-model="searchQuery.id" @keyup.enter="filterEmployees" type="number" placeholder="员工号码..." class="search-input" />
+      <input v-model="searchQuery.name" @keyup.enter="filterEmployees"placeholder="员工名字..." class="search-input" />
+      <button @click="filterEmployees" class="search-button">查询员工&nbsp;<i class="fa fa-search"></i></button>
+      <router-link to="/add-employee" class="add-button">添加员工&nbsp;<i class="fa fa-address-book"></i></router-link>
     </div>
     <table class="employee-table">
       <thead>
         <tr>
-          <th>No</th>
-          <th>Employee ID</th>
-          <th>Employee Name</th>
-          <th>Employee Age</th>
-          <th>Employee Birthday</th>
-          <th>Employee Tel</th>
-          <th>Employee Address</th>
-          <th>Employee Memo</th>
-          <th>Employee Actions</th>
+          <th>顺序</th>
+          <th>员工号码</th>
+          <th>员工名字</th>
+          <th>员工年龄</th>
+          <th>员工生日</th>
+          <th>员工电话</th>
+          <th>员工住址</th>
+          <th>员工备考</th>
+          <th>员工管理</th>
         </tr>
       </thead>
       <tbody>
@@ -31,22 +32,18 @@
           <td>{{ employee.address }}</td>
           <td>------- 备注 -------</td>
           <td>
-            <button @click="goToEditEmployee(employee.id)" class="edit-button">Edit</button>
-            <button @click="confirmDelete(employee.id)" class="delete-button">Delete</button>
-            <button @click="goToEmployeeDetails(employee.id)" class="info-button">Info</button>
+            <button @click="goToEditEmployee(employee.id)" class="edit-button">编 辑&nbsp;<i class="fa fa-edit"></i></button>
+            <button @click="confirmDelete(employee.id)" class="delete-button">删 除&nbsp;<i class="fa fa-trash"></i></button>
+            <button @click="goToEmployeeDetails(employee.id)" class="info-button">详 情&nbsp;<i class="fa fa-vcard"></i></button>
           </td>
         </tr>
       </tbody>
     </table>
-    <Pagination
-      :currentPage="currentPage"
-      :totalPages="totalPages"
-      @pageChanged="handlePageChange"
-    />
+    <Pagination :currentPage="currentPage" :totalPages="totalPages" @pageChanged="handlePageChange" />
     <div v-if="showDeleteConfirm" class="delete-confirm">
-      <p>Are you sure you want to delete this employee?</p>
-      <button @click="deleteEmployee" class="confirm-button">Yes</button>
-      <button @click="cancelDelete" class="cancel-button">No</button>
+      <p>您确定要删除此条数据吗?</p>
+      <button @click="deleteEmployee" class="confirm-button">是</button>
+      <button @click="cancelDelete" class="cancel-button">否</button>
     </div>
   </div>
 </template>
@@ -64,7 +61,7 @@ const employees = ref([
   { id: 1001, name: '王小狗', age: 30, birthday: '1995-01-01', tel: '123456789', address: '辽宁省沈阳市康平县' },
   { id: 1002, name: '林令狗', age: 25, birthday: '2000-02-02', tel: '987654321', address: '山东省青岛市' },
   { id: 1003, name: '王二狗', age: 25, birthday: '2000-02-02', tel: '987654321', address: '米花国米花市米花小镇' },
-  { id: 1004, name: '金三胖', age: 25, birthday: '2000-02-02', tel: '987654321', address: '朝鲜人民主义共和国 万岁！' },
+  { id: 1004, name: '金三胖', age: 25, birthday: '2000-02-02', tel: '987654321', address: '朝鲜人民主义共和国平壤市' },
   { id: 1005, name: '五 哥', age: 25, birthday: '2000-02-02', tel: '987654321', address: '辽宁省大连市沙河口区' },
   { id: 1006, name: '军 师', age: 25, birthday: '2000-02-02', tel: '987654321', address: '辽宁省大连市高新园区' },
   { id: 1007, name: '谢广坤', age: 25, birthday: '2000-02-02', tel: '987654321', address: '辽宁省铁岭市开原县象牙山村' },
@@ -90,7 +87,7 @@ const searchQuery = ref({
 
 const filteredEmployees = ref([...employees.value]);
 const currentPage = ref(parseInt(route.query.page as string) || 1);
-const itemsPerPage = ref(8);
+const itemsPerPage = ref(10);
 const showDeleteConfirm = ref(false);
 const deleteEmployeeId = ref(null);
 
@@ -110,8 +107,8 @@ const filterEmployees = () => {
   const isSearchChanged = searchQuery.value.id !== previousSearchQuery.value.id || searchQuery.value.name !== previousSearchQuery.value.name;
 
   filteredEmployees.value = employees.value.filter(employee => {
-    return (!searchQuery.value.id || employee.id == searchQuery.value.id) &&
-        (!searchQuery.value.name || employee.name.includes(searchQuery.value.name));
+   return (!searchQuery.value.id || employee.id == searchQuery.value.id) &&
+           (!searchQuery.value.name || employee.name.includes(searchQuery.value.name));
     });
 
   if (isSearchChanged) {
@@ -188,7 +185,20 @@ onMounted(() => {
   cursor: pointer;
 }
 
+.add-button {
+  padding: 10px 20px;
+  background-color: #42b983;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left:680px;
+}
+
 .search-button:hover {
+  background-color: #2c8c6e;
+}
+.add-button:hover {
   background-color: #2c8c6e;
 }
 
@@ -218,9 +228,13 @@ onMounted(() => {
   color: white;
   border: none;
   border-radius: 5px;
-  padding: 5px 10px;
+  padding: 2px 3px;
   cursor: pointer;
   margin-right: 5px;
+}
+
+.edit-button {
+  background-color: #ef912a;
 }
 
 .delete-button {

@@ -30,7 +30,6 @@ const menuItems = [
   { name: "Font Awesome Icons", path: "/icon", icon: "fas fa-briefcase" },
   { name: "Settings", path: "/settings", icon: "fas fa-cog" },
   { name: "EmployeeSearch", path: "/EmployeeSearch", icon: "fas fa-cog" },
-  { name: "AddEmployee", path: "/add-employee", icon: "fas fa-cog" },
 ];
 
 const currentRoute = computed(() => route.path);

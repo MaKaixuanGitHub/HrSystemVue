@@ -1,18 +1,18 @@
 <template>
   <div class="employee-details">
     <header class="header">
-      <h1>Employee Details</h1>
+      <h1>员工详情</h1>
     </header>
     <div class="details-content">
-      <p><strong>ID:</strong> {{ employee.id }}</p>
-      <p><strong>Name:</strong> {{ employee.name }}</p>
-      <p><strong>Age:</strong> {{ employee.age }}</p>
-      <p><strong>Birthday:</strong> {{ employee.birthday }}</p>
-      <p><strong>Tel:</strong> {{ employee.tel }}</p>
-      <p><strong>Address:</strong> {{ employee.address }}</p>
-      <p><strong>Hobby:</strong> 去厕所打鱼！</p>
+      <p><strong>员工号码:</strong> {{ employee.id }}</p>
+      <p><strong>员工名字:</strong> {{ employee.name }}</p>
+      <p><strong>员工年龄:</strong> {{ employee.age }}</p>
+      <p><strong>员工生日:</strong> {{ employee.birthday }}</p>
+      <p><strong>员工电话:</strong> {{ employee.tel }}</p>
+      <p><strong>员工住址:</strong> {{ employee.address }}</p>
+      <p><strong>员工爱好:</strong> ------去厕所打鱼！------</p>
     </div>
-    <router-link :to="backToSearchLink" class="back-link">Back to Search</router-link>
+    <router-link :to="backToSearchLink" class="back-link">回到查询页←</router-link>
   </div>
 </template>
 

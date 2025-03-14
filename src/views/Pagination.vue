@@ -2,19 +2,19 @@
   <nav aria-label="Page navigation">
     <ul class="pagination">
       <li class="page-item" :class="{ disabled: currentPage === 1 }">
-        <a class="page-link" href="#" @click.prevent="changePage(1)">First</a>
+        <a class="page-link" href="#" @click.prevent="changePage(1)">最前页</a>
       </li>
       <li class="page-item" :class="{ disabled: currentPage === 1 }">
-        <a class="page-link" href="#" @click.prevent="changePage(currentPage - 1)">Previous</a>
+        <a class="page-link" href="#" @click.prevent="changePage(currentPage - 1)">上一页</a>
       </li>
       <li class="page-item" v-for="page in totalPages" :key="page" :class="{ active: currentPage === page }">
         <a class="page-link" href="#" @click.prevent="changePage(page)">{{ page }}</a>
       </li>
       <li class="page-item" :class="{ disabled: currentPage === totalPages }">
-        <a class="page-link" href="#" @click.prevent="changePage(currentPage + 1)">Next</a>
+        <a class="page-link" href="#" @click.prevent="changePage(currentPage + 1)">下一页</a>
       </li>
       <li class="page-item" :class="{ disabled: currentPage === totalPages }">
-        <a class="page-link" href="#" @click.prevent="changePage(totalPages)">Last</a>
+        <a class="page-link" href="#" @click.prevent="changePage(totalPages)">最后页</a>
       </li>
     </ul>
   </nav>
